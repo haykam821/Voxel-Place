@@ -1,0 +1,23 @@
+{
+	"schemaVersion": 1,
+	"id": "voxelplace",
+	"version": "${version}",
+	"name": "Voxel Place",
+	"description": "Enforces a wait period between block interactions.",
+	"authors": [
+		"haykam821"
+	],
+	"contact": {
+		"homepage": "https://github.com/haykam821/Voxel-Place#readme",
+		"issues": "https://github.com/haykam821/Voxel-Place/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/voxelplace/icon.png",
+	"mixins": [
+		"voxelplace.mixin.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.4.0",
+		"fabric": "*"
+	}
+}

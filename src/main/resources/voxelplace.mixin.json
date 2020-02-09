@@ -1,0 +1,14 @@
+
+{
+	"required": true,
+	"package": "io.github.haykam821.voxelplace.mixin",
+	"compatibilityLevel": "JAVA_8",
+	"mixins": [
+		"PlayerEntityMixin",
+		"BlockMixin",
+		"BlockItemMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}
