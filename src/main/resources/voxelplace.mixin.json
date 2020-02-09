@@ -9,7 +9,8 @@
 		"BlockItemMixin",
 		"AbstractSignBlockMixin",
 		"AxeItemMixin",
-		"ShovelItemMixin"
+		"ShovelItemMixin",
+		"TallBlockItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
