@@ -17,6 +17,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameMode;
@@ -58,6 +59,16 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NextInte
 
 	public boolean canInteract() {
 		return nextInteraction > System.currentTimeMillis();
+	}
+
+	// Persist next interaction
+	@Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
+	public void readNextInteractionFromTag(CompoundTag compoundTag, CallbackInfo ci) {
+		setNextInteraction(compoundTag.getLong("NextInteraction"));
+	}
+	@Inject(method = "writeCustomDataToTag", at = @At("TAIL"))
+	public void writeNextInteractionToTag(CompoundTag compoundTag, CallbackInfo ci) {
+		compoundTag.putLong("NextInteraction", nextInteraction);
 	}
 
 	@Inject(method = "canMine", at = @At("HEAD"), cancellable = true)
