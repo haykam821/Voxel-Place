@@ -40,7 +40,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NextInte
 			@Override
 			public void run() {
 				try {
-					((PlayerEntity) (Object) PlayerEntityMixin.this).playSound(Instrument.HARP.getSound(), SoundCategory.NEUTRAL, 1.0F, config.pitch);
+					PlayerEntity playerEntity = ((PlayerEntity) (Object) PlayerEntityMixin.this);
+					if (!playerEntity.world.isClient) {
+						playerEntity.playSound(Instrument.HARP.getSound(), SoundCategory.NEUTRAL, 1.0F, config.pitch);
+					}
 				} catch (Exception error) {
 					System.out.println("Failed to play cooldown sound: " + error);
 				}
