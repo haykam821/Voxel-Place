@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.haykam821.voxelplace.NextInteractionEntity;
+import io.github.haykam821.voxelplace.config.ModConfig;
+import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -25,24 +27,26 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NextInte
 	long nextInteraction = 0;
 	Timer timer = new Timer();
 
+	ModConfig config = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+
 	PlayerEntityMixin(EntityType<? extends LivingEntity> type, World world) {
 		super(type, world);
 	}
 
 	public void updateNextInteraction() {
-		this.setNextInteraction(System.currentTimeMillis() + 5000);
+		this.setNextInteraction(System.currentTimeMillis() + config.cooldown);
 
 		TimerTask task = new TimerTask() {
 			@Override
 			public void run() {
 				try {
-					((PlayerEntity) (Object) PlayerEntityMixin.this).playSound(Instrument.PLING.getSound(), SoundCategory.MASTER, 3.0F, 1.0F);
+					((PlayerEntity) (Object) PlayerEntityMixin.this).playSound(Instrument.HARP.getSound(), SoundCategory.NEUTRAL, 1.0F, config.pitch);
 				} catch (Exception error) {
 					System.out.println("Failed to play cooldown sound: " + error);
 				}
 			}
 		};
-		timer.schedule(task, 5000);
+		timer.schedule(task, Math.max(0, config.cooldown));
 	}
 
 	void setNextInteraction(long newNext) {

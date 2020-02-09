@@ -13,11 +13,22 @@
 	},
 	"license": "MIT",
 	"icon": "assets/voxelplace/icon.png",
+	"entrypoints": {
+		"main": [
+			"io.github.haykam821.voxelplace.Main"
+		],
+		"modmenu": [
+			"io.github.haykam821.voxelplace.config.ModMenuCompatibility"
+		]
+	},
 	"mixins": [
 		"voxelplace.mixin.json"
 	],
 	"depends": {
 		"fabricloader": ">=0.4.0",
 		"fabric": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
 	}
 }
