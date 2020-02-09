@@ -10,7 +10,8 @@
 		"AbstractSignBlockMixin",
 		"AxeItemMixin",
 		"ShovelItemMixin",
-		"TallBlockItemMixin"
+		"TallBlockItemMixin",
+		"SheepEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
