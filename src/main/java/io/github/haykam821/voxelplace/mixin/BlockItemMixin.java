@@ -17,7 +17,8 @@ public abstract class BlockItemMixin {
 	void preventPlacing(ItemPlacementContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
-			if (NextInteractionEntity.from(playerEntity).canInteract()) {
+			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
+			if (nextInteractionEntity.canInteract()) {
 				ci.setReturnValue(ActionResult.FAIL);
 			}
 		}

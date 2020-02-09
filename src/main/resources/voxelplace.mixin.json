@@ -6,7 +6,8 @@
 	"mixins": [
 		"PlayerEntityMixin",
 		"BlockMixin",
-		"BlockItemMixin"
+		"BlockItemMixin",
+		"AbstractSignBlockMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
