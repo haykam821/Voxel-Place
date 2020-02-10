@@ -11,6 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import io.github.haykam821.voxelplace.NextInteractionEntity;
 import io.github.haykam821.voxelplace.config.ModConfig;
+import io.github.haykam821.voxelplace.config.ModConfig.FeaturesConfig;
 import me.sargunvohra.mcmods.autoconfig1u.AutoConfig;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.Entity;
@@ -61,6 +62,10 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NextInte
 		return nextInteraction > System.currentTimeMillis();
 	}
 
+	public FeaturesConfig getFeatures() {
+		return config.features;
+	}
+
 	// Persist next interaction
 	@Inject(method = "readCustomDataFromTag", at = @At("TAIL"))
 	public void readNextInteractionFromTag(CompoundTag compoundTag, CallbackInfo ci) {
@@ -73,21 +78,23 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NextInte
 
 	@Inject(method = "canMine", at = @At("HEAD"), cancellable = true)
 	void preventMining(World world, BlockPos blockPos, GameMode gamemode, CallbackInfoReturnable<Boolean> ci) {
-		if (canInteract()) {
+		if (canInteract() && getFeatures().blockBreaking) {
 			ci.setReturnValue(true);
 		}
 	}
 
 	@Inject(method = "attack", at = @At("HEAD"), cancellable = true)
 	void preventAttacking(Entity entity, CallbackInfo ci) {
-		if (canInteract()) {
+		if (canInteract() && getFeatures().attacking) {
 			ci.cancel();
 		}
 	}
 
 	@Override
 	public void onAttacking(Entity entity) {
-		updateNextInteraction();
+		if (getFeatures().attacking) {
+			updateNextInteraction();
+		}
 		super.onAttacking(entity);
 	}
 }

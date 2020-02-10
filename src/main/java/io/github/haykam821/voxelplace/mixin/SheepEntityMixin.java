@@ -15,7 +15,7 @@ public abstract class SheepEntityMixin {
 	@Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
 	void preventShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
 		NextInteractionEntity shearer = NextInteractionEntity.from(playerEntity);
-		if (shearer.canInteract()) {
+		if (shearer.canInteract() && shearer.getFeatures().sheepShearing) {
 			ci.setReturnValue(false);
 		}
 	}
@@ -23,7 +23,7 @@ public abstract class SheepEntityMixin {
 	@Inject(method = "interactMob", at = @At("RETURN"))
 	void handleSuccessfulShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
 		NextInteractionEntity shearer = NextInteractionEntity.from(playerEntity);
-		if (ci.getReturnValue()) {
+		if (ci.getReturnValue() && shearer.getFeatures().sheepShearing) {
 			shearer.updateNextInteraction();
 		}
 	}

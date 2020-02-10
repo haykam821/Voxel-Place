@@ -4,5 +4,15 @@
 	"text.autoconfig.voxelplace.option.cooldown": "Cooldown",
 	"text.autoconfig.voxelplace.option.cooldown.@Tooltip": "The time (in milliseconds) between world interactions.",
 	"text.autoconfig.voxelplace.option.pitch": "Notification Pitch",
-	"text.autoconfig.voxelplace.option.pitch.@Tooltip": "The pitch of the cooldown finish notification sound."
+	"text.autoconfig.voxelplace.option.pitch.@Tooltip": "The pitch of the cooldown finish notification sound.",
+	"text.autoconfig.voxelplace.category.features": "Features",
+	"text.autoconfig.voxelplace.option.features.signDyeing": "Dyeing Signs",
+	"text.autoconfig.voxelplace.option.features.woodStripping": "Stripping Wood",
+	"text.autoconfig.voxelplace.option.features.blockPlacing": "Placing Blocks",
+	"text.autoconfig.voxelplace.option.features.blockBreaking": "Breaking Blocks",
+	"text.autoconfig.voxelplace.option.features.sheepDyeing": "Dyeing Sheep",
+	"text.autoconfig.voxelplace.option.features.flowerPotting": "Potting Flowers",
+	"text.autoconfig.voxelplace.option.features.attacking": "Attacking",
+	"text.autoconfig.voxelplace.option.features.sheepShearing": "Shearing Sheep",
+	"text.autoconfig.voxelplace.option.features.pathFlattening": "Flattening Paths"
 }

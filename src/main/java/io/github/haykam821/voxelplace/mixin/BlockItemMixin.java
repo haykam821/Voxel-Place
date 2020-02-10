@@ -18,7 +18,7 @@ public abstract class BlockItemMixin {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
 			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
-			if (nextInteractionEntity.canInteract()) {
+			if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().blockPlacing) {
 				ci.setReturnValue(ActionResult.FAIL);
 			}
 		}

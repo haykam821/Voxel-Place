@@ -18,13 +18,19 @@ import net.minecraft.world.World;
 public abstract class BlockMixin {
 	@Inject(method = "onBreak", at = @At("TAIL"))
 	public void onBreak(World world, BlockPos blockPos, BlockState blockState, PlayerEntity playerEntity, CallbackInfo ci) {
-		NextInteractionEntity.from(playerEntity).updateNextInteraction();
+		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
+		if (nextInteractionEntity.getFeatures().blockBreaking) {
+			NextInteractionEntity.from(playerEntity).updateNextInteraction();
+		}
 	}
 
 	@Inject(method = "onPlaced", at = @At("TAIL"))
 	public void onPlaced(World world, BlockPos blockPos, BlockState blockState, LivingEntity livingEntity, ItemStack itemStack, CallbackInfo ci) {
 		if (livingEntity instanceof PlayerEntity) {
-			NextInteractionEntity.from((PlayerEntity) livingEntity).updateNextInteraction();
+			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from((PlayerEntity) livingEntity);
+			if (nextInteractionEntity.getFeatures().blockPlacing) {
+				nextInteractionEntity.updateNextInteraction();
+			}
 		}
 	}
 }

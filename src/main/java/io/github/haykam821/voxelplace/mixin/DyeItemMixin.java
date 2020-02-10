@@ -17,7 +17,7 @@ public abstract class DyeItemMixin {
 	@Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
 	void preventDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
 		NextInteractionEntity dyeUser = NextInteractionEntity.from(playerEntity);
-		if (dyeUser.canInteract()) {
+		if (dyeUser.canInteract() && dyeUser.getFeatures().sheepDyeing) {
 			ci.setReturnValue(false);
 		}
 	}
@@ -25,7 +25,7 @@ public abstract class DyeItemMixin {
 	@Inject(method = "useOnEntity", at = @At("RETURN"))
 	void handleSuccessfulDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
 		NextInteractionEntity dyeUser = NextInteractionEntity.from(playerEntity);
-		if (ci.getReturnValue()) {
+		if (ci.getReturnValue() && dyeUser.getFeatures().sheepDyeing) {
 			dyeUser.updateNextInteraction();
 		}
 	}

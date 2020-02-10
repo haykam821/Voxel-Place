@@ -20,7 +20,7 @@ public abstract class FlowerPotBlockMixin {
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
 	void preventPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity potter = NextInteractionEntity.from(playerEntity);
-		if (potter.canInteract()) {
+		if (potter.canInteract() && potter.getFeatures().flowerPotting) {
 			ci.setReturnValue(ActionResult.FAIL);
 		}
 	}
@@ -29,7 +29,7 @@ public abstract class FlowerPotBlockMixin {
 	void handleSuccessfulPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity potter = NextInteractionEntity.from(playerEntity);
 		ActionResult actionResult = ci.getReturnValue();
-		if (actionResult.isAccepted()) {
+		if (actionResult.isAccepted() && potter.getFeatures().flowerPotting) {
 			potter.updateNextInteraction();
 		}
 	}

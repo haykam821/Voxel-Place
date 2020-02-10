@@ -17,7 +17,7 @@ public abstract class AxeItemMixin {
 	void preventStripping(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
-		if (nextInteractionEntity.canInteract()) {
+		if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().woodStripping) {
 			ci.setReturnValue(ActionResult.FAIL);
 		}
 	}
@@ -25,8 +25,9 @@ public abstract class AxeItemMixin {
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
 	public void handleSuccessfulStrip(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
-		if (ci.getReturnValue().isAccepted()) {
-			NextInteractionEntity.from(user).updateNextInteraction();
+		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
+		if (ci.getReturnValue().isAccepted() && nextInteractionEntity.getFeatures().woodStripping) {
+			nextInteractionEntity.updateNextInteraction();
 		}
 	}
 }

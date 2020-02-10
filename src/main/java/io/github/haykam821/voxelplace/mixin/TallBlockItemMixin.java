@@ -19,7 +19,7 @@ public abstract class TallBlockItemMixin {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
 			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
-			if (nextInteractionEntity.canInteract()) {
+			if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().blockPlacing) {
 				ci.setReturnValue(ActionResult.FAIL);
 			}
 		}
@@ -29,9 +29,12 @@ public abstract class TallBlockItemMixin {
 	void handleSuccessfulTallPlace(ItemPlacementContext context, BlockState blockState, CallbackInfoReturnable<Boolean> ci) {
 		if (context != null) {
 			PlayerEntity placer = context.getPlayer();
-			if (placer != null && ci.getReturnValue()) {
-				NextInteractionEntity.from(placer).updateNextInteraction();
-			}
+			if (placer != null) {
+				NextInteractionEntity nextInteractionPlacer = NextInteractionEntity.from(placer);
+				if (ci.getReturnValue() && nextInteractionPlacer.getFeatures().blockPlacing) {
+					nextInteractionPlacer.updateNextInteraction();
+				}
+			} 
 		}
 	}
 }

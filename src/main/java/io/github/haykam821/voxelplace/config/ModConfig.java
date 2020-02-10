@@ -12,4 +12,20 @@ public class ModConfig implements ConfigData {
 
 	@ConfigEntry.Gui.Tooltip
 	public float pitch = 4.0F;
+
+	@ConfigEntry.Category("features")
+	@ConfigEntry.Gui.TransitiveObject
+	public FeaturesConfig features = new FeaturesConfig();
+
+	public static class FeaturesConfig {
+		public boolean signDyeing = true;
+		public boolean woodStripping = true;
+		public boolean blockPlacing = true;
+		public boolean blockBreaking = true;
+		public boolean sheepDyeing = true;
+		public boolean flowerPotting = true;
+		public boolean attacking = true;
+		public boolean sheepShearing = true;
+		public boolean pathFlattening = true;
+	}
 }
