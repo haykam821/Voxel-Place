@@ -28,5 +28,6 @@ public class ModConfig implements ConfigData {
 		public boolean sheepShearing = true;
 		public boolean pathFlattening = true;
 		public boolean mobSpawning = true;
+		public boolean bucketEmptying = true;
 	}
 }

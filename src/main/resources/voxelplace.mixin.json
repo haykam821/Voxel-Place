@@ -8,6 +8,7 @@
 		"AxeItemMixin",
 		"BlockItemMixin",
 		"BlockMixin",
+		"BucketItemMixin",
 		"DyeItemMixin",
 		"FlowerPotBlockMixin",
 		"PassiveEntityMixin",

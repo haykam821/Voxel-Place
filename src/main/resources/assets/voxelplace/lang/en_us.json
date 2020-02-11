@@ -15,5 +15,6 @@
 	"text.autoconfig.voxelplace.option.features.attacking": "Attacking",
 	"text.autoconfig.voxelplace.option.features.sheepShearing": "Shearing Sheep",
 	"text.autoconfig.voxelplace.option.features.pathFlattening": "Flattening Paths",
-	"text.autoconfig.voxelplace.option.features.mobSpawning": "Spawning Mobs"
+	"text.autoconfig.voxelplace.option.features.mobSpawning": "Spawning Mobs",
+	"text.autoconfig.voxelplace.option.features.bucketEmptying": "Emptying/Filling Buckets"
 }
