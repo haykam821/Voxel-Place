@@ -27,5 +27,6 @@ public class ModConfig implements ConfigData {
 		public boolean attacking = true;
 		public boolean sheepShearing = true;
 		public boolean pathFlattening = true;
+		public boolean mobSpawning = true;
 	}
 }

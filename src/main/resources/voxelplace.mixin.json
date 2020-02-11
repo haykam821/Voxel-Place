@@ -10,10 +10,13 @@
 		"BlockMixin",
 		"DyeItemMixin",
 		"FlowerPotBlockMixin",
+		"PassiveEntityMixin",
 		"PlayerEntityMixin",
 		"SheepEntityMixin",
 		"ShovelItemMixin",
-		"TallBlockItemMixin"
+		"SpawnEggItemMixin",
+		"TallBlockItemMixin",
+		"ZombieEntityMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
