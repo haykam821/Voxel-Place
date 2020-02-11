@@ -30,5 +30,6 @@ public class ModConfig implements ConfigData {
 		public boolean mobSpawning = true;
 		public boolean bucketEmptying = true;
 		public boolean boatPlacing = true;
+		public boolean minecartPlacing = true;
 	}
 }
