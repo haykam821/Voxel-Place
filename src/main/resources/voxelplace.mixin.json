@@ -12,6 +12,7 @@
 		"BucketItemMixin",
 		"DyeItemMixin",
 		"FlowerPotBlockMixin",
+		"ItemFrameEntityMixin",
 		"MinecartItemMixin",
 		"PassiveEntityMixin",
 		"PlayerEntityMixin",
