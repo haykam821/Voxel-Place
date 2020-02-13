@@ -19,5 +19,6 @@
 	"text.autoconfig.voxelplace.option.features.bucketEmptying": "Emptying/Filling Buckets",
 	"text.autoconfig.voxelplace.option.features.boatPlacing": "Placing Boats",
 	"text.autoconfig.voxelplace.option.features.minecartPlacing": "Placing Minecarts",
-	"text.autoconfig.voxelplace.option.features.itemFrameEditing": "Editing Item Frames"
+	"text.autoconfig.voxelplace.option.features.itemFrameEditing": "Editing Item Frames",
+	"text.autoconfig.voxelplace.option.features.fireLighting": "Lighting Fires"
 }

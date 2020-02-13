@@ -11,6 +11,8 @@
 		"BoatItemMixin",
 		"BucketItemMixin",
 		"DyeItemMixin",
+		"FireChargeItemMixin",
+		"FlintAndSteelItemMixin",
 		"FlowerPotBlockMixin",
 		"ItemFrameEntityMixin",
 		"MinecartItemMixin",
