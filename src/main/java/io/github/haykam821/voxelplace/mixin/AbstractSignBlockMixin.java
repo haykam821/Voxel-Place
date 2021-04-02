@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.haykam821.voxelplace.NextInteractionEntity;
+import io.github.haykam821.voxelplace.component.CooldownComponent;
+import io.github.haykam821.voxelplace.component.VoxelPlaceComponentInitializer;
 import net.minecraft.block.AbstractSignBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,17 +20,17 @@ import net.minecraft.world.World;
 public class AbstractSignBlockMixin {
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
 	private void preventSignDyeing(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
-		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
-		if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().signDyeing) {
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(playerEntity);
+		if (component.hasCooldown() && component.getFeatures().signDyeing) {
 			ci.setReturnValue(ActionResult.FAIL);
 		}
 	}
 
 	@Inject(method = "onUse", at = @At("RETURN"))
 	private void onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
-		if (cir.getReturnValue().isAccepted() && nextInteractionEntity.getFeatures().signDyeing) {
-			nextInteractionEntity.updateNextInteraction();
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(playerEntity);
+		if (cir.getReturnValue().isAccepted() && component.getFeatures().signDyeing) {
+			component.startCooldown();
 		}
 	}
 }

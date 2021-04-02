@@ -7,7 +7,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.haykam821.voxelplace.NextInteractionEntity;
+import io.github.haykam821.voxelplace.component.CooldownComponent;
+import io.github.haykam821.voxelplace.component.VoxelPlaceComponentInitializer;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -25,25 +26,25 @@ import net.minecraft.world.World;
 public class SpawnEggItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
 	private void preventSpawning(ItemUsageContext itemUsageContext, CallbackInfoReturnable<ActionResult> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(itemUsageContext.getPlayer());
-		if (spawner.canInteract() && spawner.getFeatures().mobSpawning) {
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(itemUsageContext.getPlayer());
+		if (component.hasCooldown() && component.getFeatures().mobSpawning) {
 			ci.setReturnValue(ActionResult.FAIL);
 		}
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
 	private void handleSuccessfulSpawning(ItemUsageContext itemUsageContext, CallbackInfoReturnable<ActionResult> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(itemUsageContext.getPlayer());
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(itemUsageContext.getPlayer());
 		ActionResult actionResult = ci.getReturnValue();
-		if (actionResult.isAccepted() && spawner.getFeatures().mobSpawning) {
-			spawner.updateNextInteraction();
+		if (actionResult.isAccepted() && component.getFeatures().mobSpawning) {
+			component.startCooldown();
 		}
 	}
 
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
 	private void preventFluidSpawning(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(playerEntity);
-		if (spawner.canInteract() && spawner.getFeatures().mobSpawning) {
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(playerEntity);
+		if (component.hasCooldown() && component.getFeatures().mobSpawning) {
 			ItemStack handStack = playerEntity.getStackInHand(hand);
 			ci.setReturnValue(TypedActionResult.fail(handStack));
 		}
@@ -51,26 +52,26 @@ public class SpawnEggItemMixin {
 
 	@Inject(method = "use", at = @At("RETURN"))
 	private void handleSuccessfulFluidSpawning(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(playerEntity);
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(playerEntity);
 		TypedActionResult<ItemStack> actionResult = ci.getReturnValue();
-		if (actionResult.getResult().isAccepted() && spawner.getFeatures().mobSpawning) {
-			spawner.updateNextInteraction();
+		if (actionResult.getResult().isAccepted() && component.getFeatures().mobSpawning) {
+			component.startCooldown();
 		}
 	}
 
 	@Inject(method = "spawnBaby", at = @At("HEAD"), cancellable = true)
 	private void preventBabySpawning(PlayerEntity user, MobEntity mob, EntityType<? extends MobEntity> type, ServerWorld world, Vec3d pos, ItemStack stack, CallbackInfoReturnable<Optional<MobEntity>> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(user);
-		if (spawner.canInteract() && spawner.getFeatures().mobSpawning) {
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(user);
+		if (component.hasCooldown() && component.getFeatures().mobSpawning) {
 			ci.setReturnValue(Optional.empty());
 		}
 	}
 
 	@Inject(method = "spawnBaby", at = @At("RETURN"))
 	private void handleSuccessfulBabySpawning(PlayerEntity user, MobEntity mob, EntityType<? extends MobEntity> type, ServerWorld world, Vec3d pos, ItemStack stack, CallbackInfoReturnable<Optional<MobEntity>> ci) {
-		NextInteractionEntity spawner = NextInteractionEntity.from(user);
-		if (ci.getReturnValue().isPresent() && spawner.getFeatures().mobSpawning) {
-			spawner.updateNextInteraction();
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(user);
+		if (ci.getReturnValue().isPresent() && component.getFeatures().mobSpawning) {
+			component.startCooldown();
 		}
 	}
 }

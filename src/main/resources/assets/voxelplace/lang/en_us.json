@@ -2,7 +2,7 @@
 	"text.autoconfig.voxelplace.title": "Voxel Place Configuration",
 	"text.autoconfig.voxelplace.category.default": "Main",
 	"text.autoconfig.voxelplace.option.cooldown": "Cooldown",
-	"text.autoconfig.voxelplace.option.cooldown.@Tooltip": "The time (in milliseconds) between world interactions.",
+	"text.autoconfig.voxelplace.option.cooldown.@Tooltip": "The time (in ticks) between world interactions.",
 	"text.autoconfig.voxelplace.option.pitch": "Notification Pitch",
 	"text.autoconfig.voxelplace.option.pitch.@Tooltip": "The pitch of the cooldown finish notification sound.",
 	"text.autoconfig.voxelplace.category.features": "Features",

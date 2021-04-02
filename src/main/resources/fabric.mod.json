@@ -17,6 +17,9 @@
 		"main": [
 			"io.github.haykam821.voxelplace.Main"
 		],
+		"cardinal-components-entity": [
+			"io.github.haykam821.voxelplace.component.VoxelPlaceComponentInitializer"
+		],
 		"modmenu": [
 			"io.github.haykam821.voxelplace.config.ModMenuCompatibility"
 		]
@@ -24,9 +27,15 @@
 	"mixins": [
 		"voxelplace.mixin.json"
 	],
+	"custom": {
+		"cardinal-components": [
+			"voxelplace:cooldown"
+		]
+	},
 	"depends": {
 		"fabricloader": ">=0.4.0",
-		"fabric": "*"
+		"fabric": "*",
+		"cardinal-components-entity": ">=2.7.0"
 	},
 	"suggests": {
 		"modmenu": "*"

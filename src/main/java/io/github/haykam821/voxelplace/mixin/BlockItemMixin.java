@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.haykam821.voxelplace.NextInteractionEntity;
+import io.github.haykam821.voxelplace.component.CooldownComponent;
+import io.github.haykam821.voxelplace.component.VoxelPlaceComponentInitializer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemPlacementContext;
@@ -17,8 +18,8 @@ public class BlockItemMixin {
 	private void preventPlacing(ItemPlacementContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
-			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
-			if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().blockPlacing) {
+			CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(playerEntity);
+			if (component.hasCooldown() && component.getFeatures().blockPlacing) {
 				ci.setReturnValue(ActionResult.FAIL);
 			}
 		}

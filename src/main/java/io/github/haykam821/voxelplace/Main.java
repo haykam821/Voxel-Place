@@ -6,6 +6,8 @@ import me.shedaniel.autoconfig.serializer.GsonConfigSerializer;
 import net.fabricmc.api.ModInitializer;
 
 public class Main implements ModInitializer {
+	public static final String MOD_ID = "voxelplace";
+
 	@Override
 	public void onInitialize() {
 		AutoConfig.register(ModConfig.class, GsonConfigSerializer::new);

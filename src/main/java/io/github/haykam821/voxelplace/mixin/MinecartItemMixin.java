@@ -5,7 +5,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import io.github.haykam821.voxelplace.NextInteractionEntity;
+import io.github.haykam821.voxelplace.component.CooldownComponent;
+import io.github.haykam821.voxelplace.component.VoxelPlaceComponentInitializer;
 import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.MinecartItem;
 import net.minecraft.util.ActionResult;
@@ -14,17 +15,17 @@ import net.minecraft.util.ActionResult;
 public class MinecartItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
 	private void preventMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
-		NextInteractionEntity minecartPlacer = NextInteractionEntity.from(context.getPlayer());
-		if (minecartPlacer.canInteract() && minecartPlacer.getFeatures().minecartPlacing) {
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(context.getPlayer());
+		if (component.hasCooldown() && component.getFeatures().minecartPlacing) {
 			ci.setReturnValue(ActionResult.FAIL);
 		}
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
 	private void handleSuccessfulMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
-		NextInteractionEntity minecartPlacer = NextInteractionEntity.from(context.getPlayer());
-		if (ci.getReturnValue().isAccepted() && minecartPlacer.getFeatures().minecartPlacing) {
-			minecartPlacer.updateNextInteraction();
+		CooldownComponent component = VoxelPlaceComponentInitializer.COOLDOWN.get(context.getPlayer());
+		if (ci.getReturnValue().isAccepted() && component.getFeatures().minecartPlacing) {
+			component.startCooldown();
 		}
 	}
 }
