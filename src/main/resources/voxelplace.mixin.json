@@ -16,13 +16,11 @@
 		"FlowerPotBlockMixin",
 		"ItemFrameEntityMixin",
 		"MinecartItemMixin",
-		"PassiveEntityMixin",
 		"PlayerEntityMixin",
 		"SheepEntityMixin",
 		"ShovelItemMixin",
 		"SpawnEggItemMixin",
-		"TallBlockItemMixin",
-		"ZombieEntityMixin"
+		"TallBlockItemMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1

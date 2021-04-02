@@ -12,9 +12,9 @@ import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.util.ActionResult;
 
 @Mixin(BlockItem.class)
-public abstract class BlockItemMixin {
+public class BlockItemMixin {
 	@Inject(method = "place", at = @At("HEAD"), cancellable = true)
-	void preventPlacing(ItemPlacementContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventPlacing(ItemPlacementContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
 			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);

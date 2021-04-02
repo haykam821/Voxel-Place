@@ -10,22 +10,23 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.DyeItem;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 @Mixin(DyeItem.class)
-public abstract class DyeItemMixin {
+public class DyeItemMixin {
 	@Inject(method = "useOnEntity", at = @At("HEAD"), cancellable = true)
-	void preventDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void preventDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity dyeUser = NextInteractionEntity.from(playerEntity);
 		if (dyeUser.canInteract() && dyeUser.getFeatures().sheepDyeing) {
-			ci.setReturnValue(false);
+			ci.setReturnValue(ActionResult.PASS);
 		}
 	}
 
 	@Inject(method = "useOnEntity", at = @At("RETURN"))
-	void handleSuccessfulDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void handleSuccessfulDyeing(ItemStack itemStack, PlayerEntity playerEntity, LivingEntity livingEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity dyeUser = NextInteractionEntity.from(playerEntity);
-		if (ci.getReturnValue() && dyeUser.getFeatures().sheepDyeing) {
+		if (ci.getReturnValue().isAccepted() && dyeUser.getFeatures().sheepDyeing) {
 			dyeUser.updateNextInteraction();
 		}
 	}

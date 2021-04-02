@@ -12,9 +12,9 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 
 @Mixin(AxeItem.class)
-public abstract class AxeItemMixin {
+public class AxeItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-	void preventStripping(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventStripping(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
 		if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().woodStripping) {
@@ -23,7 +23,7 @@ public abstract class AxeItemMixin {
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	public void handleSuccessfulStrip(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulStrip(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
 		if (ci.getReturnValue().isAccepted() && nextInteractionEntity.getFeatures().woodStripping) {

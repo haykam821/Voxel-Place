@@ -11,9 +11,9 @@ import net.minecraft.item.MinecartItem;
 import net.minecraft.util.ActionResult;
 
 @Mixin(MinecartItem.class)
-public abstract class MinecartItemMixin {
+public class MinecartItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-	void preventMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity minecartPlacer = NextInteractionEntity.from(context.getPlayer());
 		if (minecartPlacer.canInteract() && minecartPlacer.getFeatures().minecartPlacing) {
 			ci.setReturnValue(ActionResult.FAIL);
@@ -21,7 +21,7 @@ public abstract class MinecartItemMixin {
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	void handleSuccessfulMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulMinecartPlacing(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity minecartPlacer = NextInteractionEntity.from(context.getPlayer());
 		if (ci.getReturnValue().isAccepted() && minecartPlacer.getFeatures().minecartPlacing) {
 			minecartPlacer.updateNextInteraction();

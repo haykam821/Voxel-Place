@@ -11,9 +11,9 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 
 @Mixin(FlintAndSteelItem.class)
-public abstract class FlintAndSteelItemMixin {
+public class FlintAndSteelItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-	void preventLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity lighter = NextInteractionEntity.from(context.getPlayer());
 		if (lighter.canInteract() && lighter.getFeatures().fireLighting) {
 			ci.setReturnValue(ActionResult.FAIL);
@@ -21,7 +21,7 @@ public abstract class FlintAndSteelItemMixin {
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	void handleSuccessfulLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity lighter = NextInteractionEntity.from(context.getPlayer());
 		if (ci.getReturnValue().isAccepted() && lighter.getFeatures().fireLighting) {
 			lighter.updateNextInteraction();

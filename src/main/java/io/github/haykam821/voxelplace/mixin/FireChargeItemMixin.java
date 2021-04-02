@@ -11,9 +11,9 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.util.ActionResult;
 
 @Mixin(FireChargeItem.class)
-public abstract class FireChargeItemMixin {
+public class FireChargeItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-	void preventChargedLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventChargedLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity lighter = NextInteractionEntity.from(context.getPlayer());
 		if (lighter.canInteract() && lighter.getFeatures().fireLighting) {
 			ci.setReturnValue(ActionResult.FAIL);
@@ -21,7 +21,7 @@ public abstract class FireChargeItemMixin {
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	void handleSuccessfulChargedLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulChargedLighting(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity lighter = NextInteractionEntity.from(context.getPlayer());
 		if (ci.getReturnValue().isAccepted() && lighter.getFeatures().fireLighting) {
 			lighter.updateNextInteraction();

@@ -14,9 +14,9 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(BoatItem.class)
-public abstract class BoatItemMixin {
+public class BoatItemMixin {
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	void preventBoatPlacing(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
+	private void preventBoatPlacing(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
 		ItemStack itemStack = playerEntity.getStackInHand(hand);
 		NextInteractionEntity boatPlacer = NextInteractionEntity.from(playerEntity);
 		if (boatPlacer.canInteract() && boatPlacer.getFeatures().boatPlacing) {
@@ -25,7 +25,7 @@ public abstract class BoatItemMixin {
 	}
 
 	@Inject(method = "use", at = @At("RETURN"))
-	void handleSuccessfulBoatPlacing(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
+	private void handleSuccessfulBoatPlacing(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
 		NextInteractionEntity boatPlacer = NextInteractionEntity.from(playerEntity);
 		if (ci.getReturnValue().getResult().isAccepted() && boatPlacer.getFeatures().boatPlacing) {
 			boatPlacer.updateNextInteraction();

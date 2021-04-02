@@ -13,9 +13,9 @@ import net.minecraft.item.TallBlockItem;
 import net.minecraft.util.ActionResult;
 
 @Mixin(TallBlockItem.class)
-public abstract class TallBlockItemMixin {
+public class TallBlockItemMixin {
 	@Inject(method = "place", at = @At("HEAD"), cancellable = true)
-	void preventTallPlacing(ItemPlacementContext context, BlockState blockState, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventTallPlacing(ItemPlacementContext context, BlockState blockState, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity playerEntity = context.getPlayer();
 		if (playerEntity != null) {
 			NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
@@ -26,7 +26,7 @@ public abstract class TallBlockItemMixin {
 	}
 	
 	@Inject(method = "place", at = @At("RETURN"))
-	void handleSuccessfulTallPlace(ItemPlacementContext context, BlockState blockState, CallbackInfoReturnable<Boolean> ci) {
+	private void handleSuccessfulTallPlace(ItemPlacementContext context, BlockState blockState, CallbackInfoReturnable<Boolean> ci) {
 		if (context != null) {
 			PlayerEntity placer = context.getPlayer();
 			if (placer != null) {

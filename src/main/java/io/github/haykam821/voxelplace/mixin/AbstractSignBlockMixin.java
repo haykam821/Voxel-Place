@@ -16,9 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Mixin(AbstractSignBlock.class)
-public abstract class AbstractSignBlockMixin {
+public class AbstractSignBlockMixin {
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-	void preventSignDyeing(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventSignDyeing(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
 		if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().signDyeing) {
 			ci.setReturnValue(ActionResult.FAIL);
@@ -26,7 +26,7 @@ public abstract class AbstractSignBlockMixin {
 	}
 
 	@Inject(method = "onUse", at = @At("RETURN"))
-	public void onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+	private void onUse(BlockState blockState, World world, BlockPos pos, PlayerEntity playerEntity, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(playerEntity);
 		if (cir.getReturnValue().isAccepted() && nextInteractionEntity.getFeatures().signDyeing) {
 			nextInteractionEntity.updateNextInteraction();

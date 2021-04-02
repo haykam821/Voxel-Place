@@ -8,22 +8,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import io.github.haykam821.voxelplace.NextInteractionEntity;
 import net.minecraft.entity.passive.SheepEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 @Mixin(SheepEntity.class)
-public abstract class SheepEntityMixin {
+public class SheepEntityMixin {
 	@Inject(method = "interactMob", at = @At("HEAD"), cancellable = true)
-	void preventShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void preventShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity shearer = NextInteractionEntity.from(playerEntity);
 		if (shearer.canInteract() && shearer.getFeatures().sheepShearing) {
-			ci.setReturnValue(false);
+			ci.setReturnValue(ActionResult.PASS);
 		}
 	}
 
 	@Inject(method = "interactMob", at = @At("RETURN"))
-	void handleSuccessfulShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void handleSuccessfulShearing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity shearer = NextInteractionEntity.from(playerEntity);
-		if (ci.getReturnValue() && shearer.getFeatures().sheepShearing) {
+		if (ci.getReturnValue().isAccepted() && shearer.getFeatures().sheepShearing) {
 			shearer.updateNextInteraction();
 		}
 	}

@@ -8,22 +8,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import io.github.haykam821.voxelplace.NextInteractionEntity;
 import net.minecraft.entity.decoration.ItemFrameEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 
 @Mixin(ItemFrameEntity.class)
-public abstract class ItemFrameEntityMixin {
+public class ItemFrameEntityMixin {
 	@Inject(method = "interact", at = @At("HEAD"), cancellable = true)
-	void preventEditing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void preventEditing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity editor = NextInteractionEntity.from(playerEntity);
 		if (editor.canInteract() && editor.getFeatures().itemFrameEditing) {
-			ci.setReturnValue(false);
+			ci.setReturnValue(ActionResult.PASS);
 		}
 	}
 
 	@Inject(method = "interact", at = @At("RETURN"))
-	void handleSuccessfulEditing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<Boolean> ci) {
+	private void handleSuccessfulEditing(PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity editor = NextInteractionEntity.from(playerEntity);
-		if (ci.getReturnValue() && editor.getFeatures().itemFrameEditing) {
+		if (ci.getReturnValue().isAccepted() && editor.getFeatures().itemFrameEditing) {
 			editor.updateNextInteraction();
 		}
 	}

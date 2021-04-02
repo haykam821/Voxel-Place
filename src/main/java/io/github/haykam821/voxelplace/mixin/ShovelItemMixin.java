@@ -12,9 +12,9 @@ import net.minecraft.item.ShovelItem;
 import net.minecraft.util.ActionResult;
 
 @Mixin(ShovelItem.class)
-public abstract class ShovelItemMixin {
+public class ShovelItemMixin {
 	@Inject(method = "useOnBlock", at = @At("HEAD"), cancellable = true)
-	void preventFlattening(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventFlattening(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
 		if (nextInteractionEntity.canInteract() && nextInteractionEntity.getFeatures().pathFlattening) {
@@ -23,7 +23,7 @@ public abstract class ShovelItemMixin {
 	}
 
 	@Inject(method = "useOnBlock", at = @At("RETURN"))
-	public void handleSuccessfulFlatten(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulFlatten(ItemUsageContext context, CallbackInfoReturnable<ActionResult> ci) {
 		PlayerEntity user = context.getPlayer();
 		NextInteractionEntity nextInteractionEntity = NextInteractionEntity.from(user);
 		if (ci.getReturnValue().isAccepted() && nextInteractionEntity.getFeatures().pathFlattening) {

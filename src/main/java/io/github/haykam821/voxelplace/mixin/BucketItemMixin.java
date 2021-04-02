@@ -14,10 +14,10 @@ import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 
 @Mixin(BucketItem.class)
-public abstract class BucketItemMixin {
+public class BucketItemMixin {
 	@Inject(method = "use", at = @At("HEAD"), cancellable = true)
-	void preventEmptying(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
-  		ItemStack itemStack = playerEntity.getStackInHand(hand);
+	private void preventEmptying(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
+		ItemStack itemStack = playerEntity.getStackInHand(hand);
 		NextInteractionEntity bucketer = NextInteractionEntity.from(playerEntity);
 		if (bucketer.canInteract() && bucketer.getFeatures().bucketEmptying) {
 			ci.setReturnValue(TypedActionResult.fail(itemStack));
@@ -25,7 +25,7 @@ public abstract class BucketItemMixin {
 	}
 
 	@Inject(method = "use", at = @At("RETURN"))
-	void handleSuccessfulEmptying(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
+	private void handleSuccessfulEmptying(World world, PlayerEntity playerEntity, Hand hand, CallbackInfoReturnable<TypedActionResult<ItemStack>> ci) {
 		NextInteractionEntity bucketer = NextInteractionEntity.from(playerEntity);
 		if (ci.getReturnValue().getResult().isAccepted() && bucketer.getFeatures().bucketEmptying) {
 			bucketer.updateNextInteraction();

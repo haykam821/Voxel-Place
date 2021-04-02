@@ -16,9 +16,9 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 @Mixin(FlowerPotBlock.class)
-public abstract class FlowerPotBlockMixin {
+public class FlowerPotBlockMixin {
 	@Inject(method = "onUse", at = @At("HEAD"), cancellable = true)
-	void preventPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
+	private void preventPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity potter = NextInteractionEntity.from(playerEntity);
 		if (potter.canInteract() && potter.getFeatures().flowerPotting) {
 			ci.setReturnValue(ActionResult.FAIL);
@@ -26,7 +26,7 @@ public abstract class FlowerPotBlockMixin {
 	}
 
 	@Inject(method = "onUse", at = @At("RETURN"))
-	void handleSuccessfulPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
+	private void handleSuccessfulPotting(BlockState blockState, World world, BlockPos blockPos, PlayerEntity playerEntity, Hand hand, BlockHitResult blockHitResult, CallbackInfoReturnable<ActionResult> ci) {
 		NextInteractionEntity potter = NextInteractionEntity.from(playerEntity);
 		ActionResult actionResult = ci.getReturnValue();
 		if (actionResult.isAccepted() && potter.getFeatures().flowerPotting) {
