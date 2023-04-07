@@ -2,7 +2,7 @@
 {
 	"required": true,
 	"package": "io.github.haykam821.voxelplace.mixin",
-	"compatibilityLevel": "JAVA_8",
+	"compatibilityLevel": "JAVA_17",
 	"mixins": [
 		"AbstractSignBlockMixin",
 		"AxeItemMixin",

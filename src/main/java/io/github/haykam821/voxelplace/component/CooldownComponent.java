@@ -9,7 +9,7 @@ import io.github.haykam821.voxelplace.config.ModConfig.FeaturesConfig;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.block.enums.Instrument;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
@@ -17,7 +17,7 @@ import net.minecraft.sound.SoundEvent;
 
 public class CooldownComponent implements PlayerComponent<Component>, ServerTickingComponent, AutoSyncedComponent {
 	private static final ModConfig CONFIG = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
-	private static final SoundEvent FINISH_SOUND = Instrument.HARP.getSound();
+	private static final SoundEvent FINISH_SOUND = Instrument.HARP.getSound().value();
 
 	private final PlayerEntity player;
 	private int cooldownTicks = 0;
@@ -59,13 +59,13 @@ public class CooldownComponent implements PlayerComponent<Component>, ServerTick
 
 	// Serialization
 	@Override
-	public void readFromNbt(CompoundTag tag) {
-		this.cooldownTicks = tag.getInt("CooldownTicks");
+	public void readFromNbt(NbtCompound nbt) {
+		this.cooldownTicks = nbt.getInt("CooldownTicks");
 	}
 
 	@Override
-	public void writeToNbt(CompoundTag tag) {
-		tag.putInt("CooldownTicks", this.cooldownTicks);
+	public void writeToNbt(NbtCompound nbt) {
+		nbt.putInt("CooldownTicks", this.cooldownTicks);
 	}
 
 	// Syncing
